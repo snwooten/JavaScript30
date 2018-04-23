@@ -1,0 +1,74 @@
+
+<!DOCTYPE HTML PUBLIC>
+<html>
+
+  <head>
+    <title> Fun JS Exercises </title>
+
+    <!-- Load underscore.js
+         Feel free to use functions like _.each, _.map, _.filter, etc.
+         See docs here: http://underscorejs.org/
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <script type="text/javascript">
+      const EXERCISE_0 = function() {
+        const DATA = [
+          {firstName: 'Jane',     lastName: 'Jordy',    age: 75, handed: 'left'},
+          {firstName: 'Anna',     lastName: 'Tenbrink', age: 64, handed: 'left'},
+          {firstName: 'Jane',     lastName: 'Shloosh',  age: 20, handed: 'right'},
+          {firstName: 'Jordy',    lastName: 'Jordy',    age: 32, handed: 'right'},
+          {firstName: 'Jane',     lastName: 'Mudslide', age: 7,  handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 6,  handed: 'right'},
+          {firstName: 'Jane',     lastName: 'Shloosh',  age: 18, handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 10, handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 6,  handed: 'left'},
+        ];
+      /*************************************************************************
+        Exercise #0
+        - Implement findPerson
+        - findPerson takes 1 arg: a  object of the form {firstName: '__', lastName: '__'}
+        - An element of DATA "matches" the input if it matches both firstName and lastName
+        - findPerson should return a single 'matched' object from DATA
+        - If no match is found in DATA then null should be returned
+        - If multiple matches are found in DATA choose the match with the largest age
+      */
+        const findPerson = function(personToFind) {
+          let person = null
+          for (let i = 0; i < DATA.length; i++) {
+          if (personToFind.firstName === DATA[i].firstName && personToFind.lastName === DATA[i].lastName) {
+            if (person === null) {
+              person = DATA[i];
+            } else {
+                if (person.age < DATA[i].age) {
+                  person = DATA[i];
+                }
+            }
+
+          }
+
+        }
+        return person
+        };
+        // tests
+        const input0 =  {firstName: 'Anna', lastName: 'Tenbrink'};
+        console.log('input0', _.isEqual(
+          findPerson(input0),
+           {firstName: 'Anna', lastName: 'Tenbrink', age: 64, handed: 'left'},
+        ));
+        const input1 = {firstName: 'Jordy', lastName: 'Jordy'};
+        console.log('input1', _.isEqual(
+          findPerson(input1),
+            {firstName: 'Jordy', lastName: 'Jordy',    age: 32, handed: 'right'},
+        ));
+        const input2 = {firstName: 'Gunder', lastName: 'Blinken'};
+        console.log('input2', _.isEqual(
+          findPerson(input2),
+            null,
+        ));
+      }
+      EXERCISE_0();
+    </script>
+
+  </head>
+</html>

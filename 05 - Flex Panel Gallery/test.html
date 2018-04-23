@@ -1,0 +1,191 @@
+Skip to content
+
+Search…
+All gists
+GitHub
+New gist
+0
+0@tscizzletscizzle/js_exercises.html
+Last active 2 days ago •
+
+<script src="https://gist.github.com/tscizzle/b7573407cadc5d9929509c4f74c847c6.js"></script>
+
+ Code  Revisions 11
+A few fun Javascript exercises
+ js_exercises.html
+<!DOCTYPE HTML PUBLIC>
+<html>
+
+  <head>
+    <title> Fun JS Exercises </title>
+
+    <!-- Load underscore.js
+         Feel free to use functions like _.each, _.map, _.filter, etc.
+         See docs here: http://underscorejs.org/
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <script type="text/javascript">
+      /*************************************************************************
+        Exercise #0
+        - Implement findPeople
+        - findPeople takes 1 arg: a list of objects of the form {firstName: '__', lastName: '__'}
+        - An element of DATA "matches" an element of the input list if it matches both firstName and lastName
+        - findPeople should return a list of the same length as the input, with "matches" corresponding to
+            each element of the input (for examples, see tests below)
+        - If no match is found in DATA for some element of the input, the corresponding spot in the output array should be null
+        - If multiple matches are found in DATA for an element of the input, choose the match with the largest age
+      */
+      const EXERCISE_0 = function() {
+        const DATA = [
+          {firstName: 'Jane',     lastName: 'Jordy',    age: 75, handed: 'left'},
+          {firstName: 'Anna',     lastName: 'Tenbrink', age: 64, handed: 'left'},
+          {firstName: 'Jane',     lastName: 'Shloosh',  age: 20, handed: 'right'},
+          {firstName: 'Jordy',    lastName: 'Jordy',    age: 32, handed: 'right'},
+          {firstName: 'Jane',     lastName: 'Mudslide', age: 7,  handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 6,  handed: 'right'},
+          {firstName: 'Jane',     lastName: 'Shloosh',  age: 18, handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 10, handed: 'left'},
+          {firstName: 'Brandell', lastName: 'Frobb',    age: 6,  handed: 'left'},
+        ];
+        const findPeople = function(peopleToFind) {
+          let people = [];
+          let peopleObj = {}
+          for (let k = 0; k < DATA.length; k++) {
+            let name = DATA[k].firstName + DATA[k].lastName
+            if (!peopleObj[name]) {
+              peopleObj[name] = DATA[k];
+            } else {
+                if (peopleObj[name] && peopleObj[name].age < DATA[k].age) {
+                  peopleObj[name] = DATA[k];
+                }
+            }
+          }
+            for (let j = 0; j < peopleToFind.length; j++) {
+              let person = null
+              let fullName = peopleToFind[j].firstName + peopleToFind[j].lastName
+              if (fullName in peopleObj) {
+                if (person === null) {
+                  person = peopleObj[fullName];
+                }
+              }
+              people.push(person);
+            }
+            return people
+          }
+
+        // tests
+        const input0 = [
+          {firstName: 'Anna', lastName: 'Tenbrink'},
+        ];
+        console.log('input0', _.isEqual(
+          findPeople(input0),
+          [
+            {firstName: 'Anna', lastName: 'Tenbrink', age: 64, handed: 'left'},
+          ]
+        ));
+        const input1 = [
+          {firstName: 'Anna',  lastName: 'Tenbrink'},
+          {firstName: 'Jordy', lastName: 'Jordy'},
+        ];
+        console.log('input1', _.isEqual(
+          findPeople(input1),
+          [
+            {firstName: 'Anna',  lastName: 'Tenbrink', age: 64, handed: 'left'},
+            {firstName: 'Jordy', lastName: 'Jordy',    age: 32, handed: 'right'},
+          ]
+        ));
+        const input2 = [
+          {firstName: 'Gunder', lastName: 'Blinken'},
+        ];
+        console.log('input2', _.isEqual(
+          findPeople(input2),
+          [
+            null,
+          ]
+        ));
+        const input3 = [
+          {firstName: 'Anna',   lastName: 'Tenbrink'},
+          {firstName: 'Gunder', lastName: 'Blinken'},
+          {firstName: 'Jordy',  lastName: 'Jordy'},
+        ];
+        console.log('input3', _.isEqual(
+          findPeople(input3),
+          [
+            {firstName: 'Anna',  lastName: 'Tenbrink', age: 64, handed: 'left'},
+            null,
+            {firstName: 'Jordy', lastName: 'Jordy',    age: 32, handed: 'right'},
+          ]
+        ));
+        const input4 = [
+          {firstName: 'Anna',     lastName: 'Tenbrink'},
+          {firstName: 'Jane',     lastName: 'Shloosh'},
+          {firstName: 'Gunder',   lastName: 'Blinken'},
+          {firstName: 'Brandell', lastName: 'Frobb'},
+        ];
+        console.log('input4', _.isEqual(
+          findPeople(input4),
+          [
+            {firstName: 'Anna',     lastName: 'Tenbrink', age: 64, handed: 'left'},
+            {firstName: 'Jane',     lastName: 'Shloosh',  age: 20, handed: 'right'},
+            null,
+            {firstName: 'Brandell', lastName: 'Frobb',    age: 10, handed: 'left'},
+          ]
+        ));
+      }
+      /*************************************************************************
+        Exercise #1
+        - Adjust the code of makeSpeechSimulator to resolve the error
+      */
+      const EXERCISE_1 = function() {
+        const makeSpeechSimulator = function(text) {
+          return {
+            text: text,
+            speak: function() {
+              console.log(this.text);
+            },
+            speakSlowly: function() {
+              const words = this.text.split(' ');
+              const slowWords = _.map(words, function(word) {
+                return this._slowDownWord(word);
+              });
+              const slowText = slowWords.join(' ');
+              console.log(slowText);
+            },
+            _slowDownWord: function(word) {
+              return word + '...';
+            },
+          }
+        }
+        const speechMachine = makeSpeechSimulator('I am getting so sleepy.');
+        speechMachine.speak();
+        speechMachine.speakSlowly(); // WHY IS THIS BROKEN?
+      }
+      /* Choose an exercise by uncommenting */
+       EXERCISE_0();
+      // EXERCISE_1();
+    </script>
+
+  </head>
+</html>
+ @snwooten
+
+
+
+
+
+Leave a comment
+Attach files by dragging & dropping, , or pasting from the clipboard.  Styling with Markdown is supported
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About
+Press h to open a hovercard with more details.
